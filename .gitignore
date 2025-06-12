@@ -1,0 +1,77 @@
+# Build results
+bin/
+obj/
+
+# Rider
+.idea/
+*.sln.iml
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Visual Studio Code
+.vscode/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# DotCover
+*.dotCover
+
+# Logs
+*.log
+
+# Publish
+publish/
+
+# Others
+*.vspscc
+*.vssscc
+
+# NuGet
+*.nupkg
+# The packages folder can be ignored because of Package Restore
+**/packages/*
+!**/packages/build/
+!**/packages/repositories.config
+
+# Resharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+
+# Azure Pipelines
+.azure-pipelines/
+
+# Local history for JetBrains IDEs
+.localhistory/
+
+# Test results
+TestResults/
+
+# NCrunch
+.ncrunch*
+*.ncrunch*
+
+# SonarQube
+.sonar/
+
+# Coverage
+coverage/
+
+# Backup & temp
+*~
+*.tmp
+*.bak
+
+# Blazor
+wwwroot/dist/
+
+# Entity Framework
+Migrations/ 

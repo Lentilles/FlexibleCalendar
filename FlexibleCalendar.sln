@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlexibleCalendar", "FlexibleCalendar\FlexibleCalendar.csproj", "{CADA0D21-B8EA-4BCE-8AF6-5954D2A062EB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlexibleCalendar.Example", "FlexibleCalendar.Example\FlexibleCalendar.Example.csproj", "{265DC404-14E8-43D5-BE46-55FDB80F013B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CADA0D21-B8EA-4BCE-8AF6-5954D2A062EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CADA0D21-B8EA-4BCE-8AF6-5954D2A062EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CADA0D21-B8EA-4BCE-8AF6-5954D2A062EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CADA0D21-B8EA-4BCE-8AF6-5954D2A062EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{265DC404-14E8-43D5-BE46-55FDB80F013B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{265DC404-14E8-43D5-BE46-55FDB80F013B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{265DC404-14E8-43D5-BE46-55FDB80F013B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{265DC404-14E8-43D5-BE46-55FDB80F013B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

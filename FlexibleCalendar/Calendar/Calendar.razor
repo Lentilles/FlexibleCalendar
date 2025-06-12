@@ -1,0 +1,46 @@
+<div class="calendar" style="--calendar-columns: @CalendarColumns;">
+    <div class="calendar-header">
+        <button @onclick="ShowPreviousMonth">&#8592;</button>
+        <span>
+            @if (DisplayedMonths.Count == 1)
+            {
+                @DisplayedMonths[0].Year
+            }
+            else
+            {
+                @($"{DisplayedMonths[0].Year} - {DisplayedMonths[^1].Year}")
+            }
+        </span>
+        <button @onclick="ShowNextMonth">&#8594;</button>
+    </div>
+    <div class="calendar-months-grid" style="display: grid; grid-template-columns: repeat(@CalendarColumns, 1fr); gap: 1.5rem;">
+        @for (int i = 0; i < MonthsDays.Count; i++)
+        {
+            <div class="calendar-month">
+                @if (MonthsDays.Count > 1)
+                {
+                    <div class="calendar-month-title">@DisplayedMonths[i].MonthName</div>
+                }
+                <div class="calendar-weekdays">
+                    @foreach (var day in _weekDays)
+                    {
+                        <div class="calendar-weekday">@day</div>
+                    }
+                </div>
+                <div class="calendar-days">
+                    @foreach (var day in MonthsDays[i])
+                    {
+                        if (day == null)
+                        {
+                            <div class="calendar-day empty"></div>
+                        }
+                        else
+                        {
+                            <div class="calendar-day" style="@GetBackgroundColor(day.Value) @GetTextColor(day.Value)" @onclick="() => OnDayClick.InvokeAsync(day.Value)">@day.Value.Day</div>
+                        }
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>
