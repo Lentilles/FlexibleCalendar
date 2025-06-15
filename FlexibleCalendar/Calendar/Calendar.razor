@@ -2,7 +2,7 @@
     <div class="calendar-header">
         <button @onclick="ShowPreviousMonth">&#8592;</button>
         <span>
-            @if (DisplayedMonths.Count == 1)
+            @if (DisplayedMonths[0] == DisplayedMonths[^1])
             {
                 @DisplayedMonths[0].Year
             }
