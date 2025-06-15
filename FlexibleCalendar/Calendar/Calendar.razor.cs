@@ -28,13 +28,13 @@ public partial class Calendar : ComponentBase
     /// The culture used for month and weekday names. If not specified, en-US is used by default.
     /// </summary>
     [Parameter]
-    public CultureInfo? Culture { get; set; } = new CultureInfo("en-US");
+    public CultureInfo? Culture { get; set; } = new("en-US");
 
     /// <summary>
     /// The collection of calendar events to display. Each event can specify a date range and colors.
     /// </summary>
     [Parameter]
-    public IEnumerable<ICalendarEvent>? Events { get; set; }
+    public IEnumerable<ICalendarEvent>? Events { get; set; } = [];
 
     /// <summary>
     /// Event triggered when a day is clicked. Returns the clicked date.
