@@ -4,6 +4,16 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
     </PropertyGroup>
+    <PropertyGroup>
+        <PackageId>FlexibleCalendar</PackageId>
+        <Version>1.0.1</Version>
+        <Authors>Lentilles</Authors>
+        <Description>Easy to use calendar</Description>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageProjectUrl>https://github.com/Lentilles/FlexibleCalendar/tree/main/FlexibleCalendar</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/Lentilles/FlexibleCalendar</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+    </PropertyGroup>
     <ItemGroup>
         <SupportedPlatform Include="browser"/>
     </ItemGroup>
