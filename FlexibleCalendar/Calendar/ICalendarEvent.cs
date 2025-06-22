@@ -4,24 +4,23 @@ namespace FlexibleCalendar.Calendar;
 
 public interface ICalendarEvent
 {
-    DateTime StartDate { get; set; }
-    DateTime EndDate { get; set; }
-    Color Color { get; set; }
-    Color TextColor { get; set; }
+    DateTime StartDate { get; }
+    DateTime EndDate { get; }
+    IEnumerable<Color> BackgroundColors { get; }
+    Color TextColor { get; }
 }
 
-public class CalendarEvent : ICalendarEvent
+public class CalendarEvent(DateTime start, DateTime end, 
+    IEnumerable<Color> color, Color textColor)
+    : ICalendarEvent
 {
-    public DateTime StartDate { get; set; }
-    public DateTime EndDate { get; set; }
-    public Color Color { get; set; }
-    public Color TextColor { get; set; }
-
-    public CalendarEvent(DateTime start, DateTime end, Color color, Color textColor)
-    {
-        StartDate = start;
-        EndDate = end;
-        Color = color;
-        TextColor = textColor;
-    }
+    public DateTime StartDate { get; set; } = start;
+    
+    public DateTime EndDate { get; set; } = end;
+    
+    public IEnumerable<Color> BackgroundColors { get; set; } = color;
+    
+    public Color TextColor { get; set; } = textColor;
+    
+    
 } 

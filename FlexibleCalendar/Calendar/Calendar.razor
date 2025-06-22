@@ -2,7 +2,7 @@
     <div class="calendar-header">
         <button @onclick="ShowPreviousMonth">&#8592;</button>
         <span>
-            @if (DisplayedMonths[0] == DisplayedMonths[^1])
+            @if (DisplayedMonths.First().Year == DisplayedMonths.Last().Year)
             {
                 @DisplayedMonths[0].Year
             }
@@ -36,7 +36,7 @@
                         }
                         else
                         {
-                            <div class="calendar-day" style="@GetBackgroundColor(day.Value) @GetTextColor(day.Value)" @onclick="() => OnDayClick.InvokeAsync(day.Value)">@day.Value.Day</div>
+                            <div class="calendar-day gradient-text" style="@GetBackgroundColor(day.Value) @GetTextColor(day.Value)" @onclick="() => OnDayClick.InvokeAsync(day.Value)">@day.Value.Day</div>
                         }
                     }
                 </div>

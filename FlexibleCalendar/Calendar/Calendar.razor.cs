@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using System.Drawing;
 using System.Globalization;
+using FlexibleCalendar.Extensions;
 
 namespace FlexibleCalendar.Calendar;
 
@@ -43,7 +44,7 @@ public partial class Calendar : ComponentBase
     public EventCallback<DateTime> OnDayClick { get; set; }
 
     /// <summary>
-    /// The CSS variable name (e.g. --my-bg) to use as the background for date numbers. If set, will be used as background for all date cells.
+    /// The CSS variable name (e.g. --my-bg) to use as the background for date numbers. If set, it will be used as a background for all date cells.
     /// </summary>
     [Parameter]
     public string? DateBackgroundCssVariable { get; set; }
@@ -53,7 +54,7 @@ public partial class Calendar : ComponentBase
     protected override void OnInitialized()
     {
         _displayedMonth = StartDate?.Date ?? new DateTime(DateTime.Today.Year, 1, 1);
-        var culture = Culture ?? CultureInfo.CurrentCulture;
+        CultureInfo culture = Culture ?? CultureInfo.CurrentCulture;
         _weekDays = culture.DateTimeFormat.AbbreviatedDayNames;
         // Сдвиг, чтобы неделя начиналась с понедельника
         if (culture.DateTimeFormat.FirstDayOfWeek == DayOfWeek.Monday)
@@ -88,14 +89,14 @@ public partial class Calendar : ComponentBase
     {
         MonthsDays.Clear();
         DisplayedMonths.Clear();
-        var culture = Culture ?? CultureInfo.CurrentCulture;
+        CultureInfo culture = Culture ?? CultureInfo.CurrentCulture;
         for (int m = 0; m < MonthsToShow; m++)
         {
-            var month = _displayedMonth.AddMonths(m);
-            var monthName = culture.DateTimeFormat.GetMonthName(month.Month);
+            DateTime month = _displayedMonth.AddMonths(m);
+            string monthName = culture.DateTimeFormat.GetMonthName(month.Month);
             DisplayedMonths.Add((month.Year, monthName));
-            var days = new List<DateTime?>();
-            var firstDayOfMonth = new DateTime(month.Year, month.Month, 1);
+            List<DateTime?> days = new List<DateTime?>();
+            DateTime firstDayOfMonth = new DateTime(month.Year, month.Month, 1);
             int daysInMonth = DateTime.DaysInMonth(month.Year, month.Month);
             int startDayOfWeek = ((int)firstDayOfMonth.DayOfWeek + 6) % 7; // Пн=0, Вс=6
             for (int i = 0; i < startDayOfWeek; i++)
@@ -109,15 +110,14 @@ public partial class Calendar : ComponentBase
 
     private ICalendarEvent? GetEventForDate(DateTime date)
     {
-        if (Events == null) return null;
-        return Events.FirstOrDefault(ev => ev.StartDate.Date <= date.Date && ev.EndDate.Date >= date.Date);
+        return Events?.FirstOrDefault(ev => ev.StartDate.Date <= date.Date && ev.EndDate.Date >= date.Date);
     }
 
     private string GetBackgroundColor(DateTime date)
     {
-        var ev = GetEventForDate(date);
+        ICalendarEvent? ev = GetEventForDate(date);
         if (ev != null)
-            return $"background: {ColorTranslator.ToHtml(ev.Color)};";
+            return $"background: repeating-linear-gradient(45deg, {ev.BackgroundColors.GetHtmlGradient()});";
         if (!string.IsNullOrWhiteSpace(DateBackgroundCssVariable))
             return $"background: var({DateBackgroundCssVariable});";
         return string.Empty;
@@ -125,7 +125,7 @@ public partial class Calendar : ComponentBase
 
     private string? GetTextColor(DateTime date)
     {
-        var ev = GetEventForDate(date);
+        ICalendarEvent? ev = GetEventForDate(date);
         return ev != null ? $"color: {ColorTranslator.ToHtml(ev.TextColor)};" : null;
     }
 }
