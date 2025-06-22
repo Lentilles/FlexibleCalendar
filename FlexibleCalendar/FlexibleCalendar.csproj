@@ -5,8 +5,9 @@
         <ImplicitUsings>enable</ImplicitUsings>
     </PropertyGroup>
     <PropertyGroup>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageId>FlexibleCalendar</PackageId>
-        <Version>1.0.1</Version>
+        <Version>1.0.2</Version>
         <Authors>Lentilles</Authors>
         <Description>Easy to use calendar</Description>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -22,5 +23,8 @@
     </ItemGroup>
     <ItemGroup>
       <Folder Include="wwwroot\" />
+    </ItemGroup>
+    <ItemGroup>
+        <None Include="README.md" Pack="true" PackagePath="" />
     </ItemGroup>
 </Project>
