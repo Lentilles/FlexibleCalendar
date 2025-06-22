@@ -36,7 +36,15 @@
                         }
                         else
                         {
-                            <div class="calendar-day gradient-text" style="@GetBackgroundColor(day.Value) @GetTextColor(day.Value)" @onclick="() => OnDayClick.InvokeAsync(day.Value)">@day.Value.Day</div>
+                            <div class="calendar-day" style="@GetBackgroundColor(day.Value) @GetTextColor(day.Value)" @onclick="() => OnDayClick.InvokeAsync(day.Value)">
+                                <div class="calendar-day-number">@day.Value.Day</div>
+                                @if (ColorizeStyle == ColoredStyle.Pilled)
+                                {
+                                    <div class="calendar-pill-wrapper">
+                                        <div class="calendar-pill" style="@GetPillColor(day.Value)"></div>
+                                    </div>
+                                }
+                            </div>
                         }
                     }
                 </div>

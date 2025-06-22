@@ -7,7 +7,7 @@
     <PropertyGroup>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageId>FlexibleCalendar</PackageId>
-        <Version>1.0.2</Version>
+        <Version>1.0.3</Version>
         <Authors>Lentilles</Authors>
         <Description>Easy to use calendar</Description>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>

@@ -48,6 +48,9 @@ public partial class Calendar : ComponentBase
     /// </summary>
     [Parameter]
     public string? DateBackgroundCssVariable { get; set; }
+    
+    [Parameter]
+    public ColoredStyle ColorizeStyle { get; set; } = ColoredStyle.Filled;
 
     private DateTime _displayedMonth;
 
@@ -115,14 +118,38 @@ public partial class Calendar : ComponentBase
 
     private string GetBackgroundColor(DateTime date)
     {
+        if (ColorizeStyle != ColoredStyle.Filled)
+        {
+            return !string.IsNullOrWhiteSpace(DateBackgroundCssVariable) ? $"background: var({DateBackgroundCssVariable});" : string.Empty;
+        }
+
         ICalendarEvent? ev = GetEventForDate(date);
+
         if (ev != null)
+        {
             return $"background: repeating-linear-gradient(45deg, {ev.BackgroundColors.GetHtmlGradient()});";
-        if (!string.IsNullOrWhiteSpace(DateBackgroundCssVariable))
-            return $"background: var({DateBackgroundCssVariable});";
-        return string.Empty;
+        }
+        
+        return !string.IsNullOrWhiteSpace(DateBackgroundCssVariable) ? $"background: var({DateBackgroundCssVariable});" : string.Empty;
     }
 
+    private string GetPillColor(DateTime date)
+    {
+        if (ColorizeStyle != ColoredStyle.Pilled)
+        {
+            return string.Empty;
+        }
+
+        ICalendarEvent? ev = GetEventForDate(date);
+
+        if (ev != null)
+        {
+            return $"background: repeating-linear-gradient(to right, {ev.BackgroundColors.GetHtmlGradient()});";
+        }
+        
+        return !string.IsNullOrWhiteSpace(DateBackgroundCssVariable) ? $"background: var({DateBackgroundCssVariable});" : string.Empty;
+    }
+    
     private string? GetTextColor(DateTime date)
     {
         ICalendarEvent? ev = GetEventForDate(date);
