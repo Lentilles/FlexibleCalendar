@@ -1,4 +1,4 @@
-namespace FlexibleCalendar.Calendar;
+namespace FlexibleCalendar.Models;
 
 public enum ColoredStyle
 {

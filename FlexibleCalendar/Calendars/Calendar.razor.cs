@@ -1,9 +1,11 @@
+using FlexibleCalendar.Extensions;
+using FlexibleCalendar.Interfaces;
+using FlexibleCalendar.Models;
 using Microsoft.AspNetCore.Components;
 using System.Drawing;
 using System.Globalization;
-using FlexibleCalendar.Extensions;
 
-namespace FlexibleCalendar.Calendar;
+namespace FlexibleCalendar.Calendars;
 
 public partial class Calendar : ComponentBase
 {
@@ -52,6 +54,14 @@ public partial class Calendar : ComponentBase
     [Parameter]
     public ColoredStyle ColorizeStyle { get; set; } = ColoredStyle.Filled;
 
+    public DateTime CalendarFirstDate => MonthsDays.First().FirstOrDefault(x => x.HasValue)!.Value;
+    
+    public DateTime CalendarEndDate => MonthsDays.Last().LastOrDefault(x => x.HasValue)!.Value;
+    
+    public int StartYear => DisplayedMonths.First().Year;
+    
+    public int EndYear => DisplayedMonths.Last().Year;
+    
     private DateTime _displayedMonth;
 
     protected override void OnInitialized()
@@ -59,7 +69,6 @@ public partial class Calendar : ComponentBase
         _displayedMonth = StartDate?.Date ?? new DateTime(DateTime.Today.Year, 1, 1);
         CultureInfo culture = Culture ?? CultureInfo.CurrentCulture;
         _weekDays = culture.DateTimeFormat.AbbreviatedDayNames;
-        // Сдвиг, чтобы неделя начиналась с понедельника
         if (culture.DateTimeFormat.FirstDayOfWeek == DayOfWeek.Monday)
         {
             _weekDays = _weekDays.Skip(1).Concat(_weekDays.Take(1)).ToArray();
@@ -72,10 +81,13 @@ public partial class Calendar : ComponentBase
         MonthsToShow = Math.Max(1, Math.Min(12, MonthsToShow));
     }
 
-    private string[] _weekDays = [];
-    private List<List<DateTime?>> MonthsDays { get; set; } = new();
-    private List<(int Year, string MonthName)> DisplayedMonths { get; set; } = new();
 
+
+    private string[] _weekDays = [];
+    private List<List<DateTime?>> MonthsDays { get; set; } = [];
+    
+    private List<(int Year, string MonthName)> DisplayedMonths { get; set; } = [];
+    
     private void ShowPreviousMonth()
     {
         _displayedMonth = _displayedMonth.AddMonths(-MonthsToShow);
@@ -98,10 +110,10 @@ public partial class Calendar : ComponentBase
             DateTime month = _displayedMonth.AddMonths(m);
             string monthName = culture.DateTimeFormat.GetMonthName(month.Month);
             DisplayedMonths.Add((month.Year, monthName));
-            List<DateTime?> days = new List<DateTime?>();
-            DateTime firstDayOfMonth = new DateTime(month.Year, month.Month, 1);
+            List<DateTime?> days = new();
+            DateTime firstDayOfMonth = new(month.Year, month.Month, 1);
             int daysInMonth = DateTime.DaysInMonth(month.Year, month.Month);
-            int startDayOfWeek = ((int)firstDayOfMonth.DayOfWeek + 6) % 7; // Пн=0, Вс=6
+            int startDayOfWeek = ((int)firstDayOfMonth.DayOfWeek + 6) % 7;
             for (int i = 0; i < startDayOfWeek; i++)
                 days.Add(null);
             for (int day = 1; day <= daysInMonth; day++)

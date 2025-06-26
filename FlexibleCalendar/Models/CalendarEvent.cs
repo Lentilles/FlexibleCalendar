@@ -1,14 +1,7 @@
+using FlexibleCalendar.Interfaces;
 using System.Drawing;
 
-namespace FlexibleCalendar.Calendar;
-
-public interface ICalendarEvent
-{
-    DateTime StartDate { get; }
-    DateTime EndDate { get; }
-    IEnumerable<Color> BackgroundColors { get; }
-    Color TextColor { get; }
-}
+namespace FlexibleCalendar.Models;
 
 public class CalendarEvent(DateTime start, DateTime end, 
     IEnumerable<Color> color, Color textColor)

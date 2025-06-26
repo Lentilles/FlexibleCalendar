@@ -1,7 +1,6 @@
 .calendar {
     --calendar-columns: 1;
     max-width: calc(320px * var(--calendar-columns));
-    margin: 1rem auto;
     border: 1px solid #ccc;
     border-radius: 8px;
     box-shadow: 0 2px 8px #0001;
