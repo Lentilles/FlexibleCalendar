@@ -1,0 +1,65 @@
+name: CI/CD FlexibleCalendar
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Fetch main branch
+        run: git fetch origin main:refs/remotes/origin/main --depth=1
+
+      - name: Get current version
+        id: current_version
+        run: |
+          version=$(grep -oP '<Version>\\K[^<]+' FlexibleCalendar/FlexibleCalendar.csproj)
+          echo "Current version: $version"
+          echo "version=$version" >> $GITHUB_OUTPUT
+
+      - name: Get main branch version
+        id: main_version
+        run: |
+          git show origin/main:FlexibleCalendar/FlexibleCalendar.csproj > main_FlexibleCalendar.csproj
+          main_version=$(grep -oP '<Version>\\K[^<]+' main_FlexibleCalendar.csproj)
+          echo "Main version: $main_version"
+          echo "version=$main_version" >> $GITHUB_OUTPUT
+
+      - name: Check if version changed
+        run: |
+          if [ "${{ steps.current_version.outputs.version }}" = "${{ steps.main_version.outputs.version }}" ]; then
+            echo "Version did not change. Skipping pipeline."
+            exit 0
+          fi
+          echo "Version changed. Continuing pipeline."
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore FlexibleCalendar/FlexibleCalendar.csproj
+
+      - name: Build
+        run: dotnet build FlexibleCalendar/FlexibleCalendar.csproj --configuration Release --no-restore
+
+      - name: Pack
+        run: dotnet pack FlexibleCalendar/FlexibleCalendar.csproj --configuration Release --no-build --output ./nupkg
+
+      - name: Publish to NuGet
+        if: github.event_name != 'pull_request'
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        run: |
+          dotnet nuget push ./nupkg/*.nupkg \
+            --api-key "$NUGET_API_KEY" \
+            --source "https://api.nuget.org/v3/index.json" \
+            --skip-duplicate 
