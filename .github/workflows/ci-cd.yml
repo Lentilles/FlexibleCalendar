@@ -20,7 +20,7 @@ jobs:
       - name: Get current version
         id: current_version
         run: |
-          version=$(grep -oP '<Version>\\K[^<]+' FlexibleCalendar/FlexibleCalendar.csproj)
+          version=$(sed -n 's|.*<Version>\(.*\)</Version>.*|\1|p' FlexibleCalendar/FlexibleCalendar.csproj)
           echo "Current version: $version"
           echo "version=$version" >> $GITHUB_OUTPUT
 
@@ -28,7 +28,7 @@ jobs:
         id: main_version
         run: |
           git show origin/main:FlexibleCalendar/FlexibleCalendar.csproj > main_FlexibleCalendar.csproj
-          main_version=$(grep -oP '<Version>\\K[^<]+' main_FlexibleCalendar.csproj)
+          main_version=$(sed -n 's|.*<Version>\(.*\)</Version>.*|\1|p' main_FlexibleCalendar.csproj)
           echo "Main version: $main_version"
           echo "version=$main_version" >> $GITHUB_OUTPUT
 
