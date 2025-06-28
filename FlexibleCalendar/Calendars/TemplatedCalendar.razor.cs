@@ -1,4 +1,5 @@
 using FlexibleCalendar.Extensions;
+using FlexibleCalendar.Interfaces;
 using FlexibleCalendar.Models;
 using Microsoft.AspNetCore.Components;
 using System.Drawing;
@@ -47,7 +48,9 @@ public partial class TemplatedCalendar : ComponentBase
     [Parameter]
     public ColoredStyle ColorizeStyle { get; set; } = ColoredStyle.Filled;
 
-    [Parameter] public required List<WeekTemplate> Templates { get; set; }
+    [Parameter] public required IEnumerable<IWeekTemplate> Templates { get; set; } = [];
+
+    [Parameter] public IEnumerable<ISpecialDate> SpecialDates { get; set; } = [];
 
     public DateOnly CalendarFirstDate => MonthsDays.First().FirstOrDefault(x => x.HasValue)!.Value;
     
@@ -124,8 +127,15 @@ public partial class TemplatedCalendar : ComponentBase
         {
             return !string.IsNullOrWhiteSpace(DateBackgroundCssVariable) ? $"background: var({DateBackgroundCssVariable});" : string.Empty;
         }
+
+        ISpecialDate? specialDate = SpecialDates.FirstOrDefault(x => x.Date == date);
+
+        if (specialDate != null)
+        {
+            return $"background: repeating-linear-gradient(45deg, {specialDate.Colors.GetHtmlGradient()};";
+        }
         
-        WeekTemplate? closestPastDate = Templates
+        IWeekTemplate? closestPastDate = Templates
             .Where(d => d.AcceptFromDate < date)
             .OrderByDescending(d => d)
             .FirstOrDefault();
@@ -147,7 +157,14 @@ public partial class TemplatedCalendar : ComponentBase
             return !string.IsNullOrWhiteSpace(DateBackgroundCssVariable) ? $"background: var({DateBackgroundCssVariable});" : string.Empty;
         }
         
-        WeekTemplate? closestPastDate = Templates
+        ISpecialDate? specialDate = SpecialDates.FirstOrDefault(x => x.Date == date);
+
+        if (specialDate != null)
+        {
+            return $"background: repeating-linear-gradient(to right, {specialDate.Colors.GetHtmlGradient()};";
+        }
+        
+        IWeekTemplate? closestPastDate = Templates
             .Where(d => d.AcceptFromDate < date)
             .OrderByDescending(d => d.AcceptFromDate)
             .FirstOrDefault();
@@ -169,7 +186,14 @@ public partial class TemplatedCalendar : ComponentBase
             return string.Empty;
         }
         
-        WeekTemplate? closestPastDate = Templates
+        ISpecialDate? specialDate = SpecialDates.FirstOrDefault(x => x.Date == date);
+
+        if (specialDate != null)
+        {
+            return $"color: {specialDate.TextColor};";
+        }
+        
+        IWeekTemplate? closestPastDate = Templates
             .Where(d => d.AcceptFromDate < date)
             .OrderByDescending(d => d)
             .FirstOrDefault();
