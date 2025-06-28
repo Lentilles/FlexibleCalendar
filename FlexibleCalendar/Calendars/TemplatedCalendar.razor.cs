@@ -137,7 +137,7 @@ public partial class TemplatedCalendar : ComponentBase
 
         IEnumerable<Color> colors = closestPastDate.Colors[date.DayOfWeek];
         
-        return $"background: repeating-linear-gradient(45deg, {colors.GetHtmlGradient()};";
+        return $"background: repeating-linear-gradient(45deg, {colors.GetHtmlGradient()});";
     }
 
     private string GetDayOfWeekPillStyle(DateOnly date)
