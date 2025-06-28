@@ -161,7 +161,7 @@ public partial class TemplatedCalendar : ComponentBase
 
         if (specialDate != null)
         {
-            return $"background: repeating-linear-gradient(to right, {specialDate.Colors.GetHtmlGradient()};";
+            return $"background: repeating-linear-gradient(to right, {specialDate.Colors.GetHtmlGradient()});";
         }
         
         IWeekTemplate? closestPastDate = Templates
