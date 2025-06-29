@@ -1,3 +1,4 @@
+@inherits CalendarBase
 @using FlexibleCalendar.Models
 <div class="calendar" style="--calendar-columns: @CalendarColumns;">
     <div class="calendar-header">
@@ -20,7 +21,7 @@
             <div class="calendar-month">
                 <div class="calendar-month-title">@DisplayedMonths[i].MonthName</div>
                 <div class="calendar-weekdays">
-                    @foreach (var day in _weekDays)
+                    @foreach (var day in WeekDays)
                     {
                         <div class="calendar-weekday">@day</div>
                     }
@@ -34,7 +35,7 @@
                         }
                         else
                         {
-                            <div class="calendar-day" style="@GetDayOfWeekStyle(day.Value)" @onclick="() => OnDayClick.InvokeAsync(day.Value)">
+                            <div class="calendar-day" style="@GetDayOfWeekStyle(day.Value) @GetTextColor(day.Value)" @onclick="() => OnDayClick.InvokeAsync(day.Value)">
                                 <div class="calendar-day-number">@day.Value.Day</div>
                                 @if (ColorizeStyle == ColoredStyle.Pilled)
                                 {

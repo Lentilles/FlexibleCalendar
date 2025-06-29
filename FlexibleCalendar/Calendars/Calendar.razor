@@ -1,4 +1,5 @@
 @using FlexibleCalendar.Models
+@inherits CalendarBase
 <div class="calendar" style="--calendar-columns: @CalendarColumns;">
     <div class="calendar-header">
         <button @onclick="ShowPreviousMonth">&#8592;</button>
@@ -20,7 +21,7 @@
             <div class="calendar-month">
                 <div class="calendar-month-title">@DisplayedMonths[i].MonthName</div>
                 <div class="calendar-weekdays">
-                    @foreach (var day in _weekDays)
+                    @foreach (var day in WeekDays)
                     {
                         <div class="calendar-weekday">@day</div>
                     }
