@@ -51,7 +51,7 @@ public partial class TemplatedCalendar : CalendarBase
 
         if (specialDate != null)
         {
-            return GetMarkedDateColors(specialDate.Colors, ColorizeStyle);;
+            return GetMarkedDateColors(specialDate.Colors, ColorizeStyle);
         }
         
         IWeekTemplate? closestPastDate = Templates
