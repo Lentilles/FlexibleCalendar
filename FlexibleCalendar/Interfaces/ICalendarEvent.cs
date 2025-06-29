@@ -4,8 +4,8 @@ namespace FlexibleCalendar.Interfaces;
 
 public interface ICalendarEvent
 {
-    DateTime StartDate { get; }
-    DateTime EndDate { get; }
+    DateOnly StartDate { get; }
+    DateOnly EndDate { get; }
     IEnumerable<Color> BackgroundColors { get; }
     Color TextColor { get; }
 }

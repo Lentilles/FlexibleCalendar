@@ -25,7 +25,7 @@ public partial class Calendar : ComponentBase
     /// The start date for the calendar. If not specified, January 1st of the current year is used by default.
     /// </summary>
     [Parameter]
-    public DateTime? StartDate { get; set; }
+    public DateOnly? StartDate { get; set; }
 
     /// <summary>
     /// The culture used for month and weekday names. If not specified, en-US is used by default.
@@ -43,7 +43,7 @@ public partial class Calendar : ComponentBase
     /// Event triggered when a day is clicked. Returns the clicked date.
     /// </summary>
     [Parameter]
-    public EventCallback<DateTime> OnDayClick { get; set; }
+    public EventCallback<DateOnly> OnDayClick { get; set; }
 
     /// <summary>
     /// The CSS variable name (e.g. --my-bg) to use as the background for date numbers. If set, it will be used as a background for all date cells.
@@ -53,20 +53,24 @@ public partial class Calendar : ComponentBase
     
     [Parameter]
     public ColoredStyle ColorizeStyle { get; set; } = ColoredStyle.Filled;
-
-    public DateTime CalendarFirstDate => MonthsDays.First().FirstOrDefault(x => x.HasValue)!.Value;
     
-    public DateTime CalendarEndDate => MonthsDays.Last().LastOrDefault(x => x.HasValue)!.Value;
+    
+    /// <summary>
+    /// First Date of displayed calendar
+    /// </summary>
+    public DateOnly CalendarFirstDate => MonthsDays.First().FirstOrDefault(x => x.HasValue)!.Value;
+    
+    public DateOnly CalendarEndDate => MonthsDays.Last().LastOrDefault(x => x.HasValue)!.Value;
     
     public int StartYear => DisplayedMonths.First().Year;
     
     public int EndYear => DisplayedMonths.Last().Year;
     
-    private DateTime _displayedMonth;
+    private DateOnly _displayedMonth;
 
     protected override void OnInitialized()
     {
-        _displayedMonth = StartDate?.Date ?? new DateTime(DateTime.Today.Year, 1, 1);
+        _displayedMonth = StartDate ?? new DateOnly(DateTime.Today.Year, 1, 1);
         CultureInfo culture = Culture ?? CultureInfo.CurrentCulture;
         _weekDays = culture.DateTimeFormat.AbbreviatedDayNames;
         if (culture.DateTimeFormat.FirstDayOfWeek == DayOfWeek.Monday)
@@ -80,11 +84,10 @@ public partial class Calendar : ComponentBase
     {
         MonthsToShow = Math.Max(1, Math.Min(12, MonthsToShow));
     }
-
-
-
+    
     private string[] _weekDays = [];
-    private List<List<DateTime?>> MonthsDays { get; set; } = [];
+    
+    private List<List<DateOnly?>> MonthsDays { get; set; } = [];
     
     private List<(int Year, string MonthName)> DisplayedMonths { get; set; } = [];
     
@@ -107,28 +110,28 @@ public partial class Calendar : ComponentBase
         CultureInfo culture = Culture ?? CultureInfo.CurrentCulture;
         for (int m = 0; m < MonthsToShow; m++)
         {
-            DateTime month = _displayedMonth.AddMonths(m);
+            DateOnly month = _displayedMonth.AddMonths(m);
             string monthName = culture.DateTimeFormat.GetMonthName(month.Month);
             DisplayedMonths.Add((month.Year, monthName));
-            List<DateTime?> days = new();
+            List<DateOnly?> days = new();
             DateTime firstDayOfMonth = new(month.Year, month.Month, 1);
             int daysInMonth = DateTime.DaysInMonth(month.Year, month.Month);
             int startDayOfWeek = ((int)firstDayOfMonth.DayOfWeek + 6) % 7;
             for (int i = 0; i < startDayOfWeek; i++)
                 days.Add(null);
             for (int day = 1; day <= daysInMonth; day++)
-                days.Add(new DateTime(month.Year, month.Month, day));
+                days.Add(new DateOnly(month.Year, month.Month, day));
             MonthsDays.Add(days);
         }
         StateHasChanged();
     }
 
-    private ICalendarEvent? GetEventForDate(DateTime date)
+    private ICalendarEvent? GetEventForDate(DateOnly date)
     {
-        return Events?.FirstOrDefault(ev => ev.StartDate.Date <= date.Date && ev.EndDate.Date >= date.Date);
+        return Events?.FirstOrDefault(ev => ev.StartDate <= date && ev.EndDate >= date);
     }
 
-    private string GetBackgroundColor(DateTime date)
+    private string GetBackgroundColor(DateOnly date)
     {
         if (ColorizeStyle != ColoredStyle.Filled)
         {
@@ -145,7 +148,7 @@ public partial class Calendar : ComponentBase
         return !string.IsNullOrWhiteSpace(DateBackgroundCssVariable) ? $"background: var({DateBackgroundCssVariable});" : string.Empty;
     }
 
-    private string GetPillColor(DateTime date)
+    private string GetPillColor(DateOnly date)
     {
         if (ColorizeStyle != ColoredStyle.Pilled)
         {
@@ -162,7 +165,7 @@ public partial class Calendar : ComponentBase
         return !string.IsNullOrWhiteSpace(DateBackgroundCssVariable) ? $"background: var({DateBackgroundCssVariable});" : string.Empty;
     }
     
-    private string? GetTextColor(DateTime date)
+    private string? GetTextColor(DateOnly date)
     {
         ICalendarEvent? ev = GetEventForDate(date);
         return ev != null ? $"color: {ColorTranslator.ToHtml(ev.TextColor)};" : null;
