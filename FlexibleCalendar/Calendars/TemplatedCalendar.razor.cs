@@ -55,7 +55,7 @@ public partial class TemplatedCalendar : CalendarBase
         }
         
         IWeekTemplate? closestPastDate = Templates
-            .Where(d => d.AcceptFromDate < date)
+            .Where(d => d.AcceptFromDate <= date)
             .OrderByDescending(d => d.AcceptFromDate)
             .FirstOrDefault();
 
