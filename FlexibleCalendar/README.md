@@ -10,7 +10,7 @@ FlexibleCalendar is a Blazor component for displaying a calendar with the abilit
 2. Import the namespace:
 
 ```razor
-@using FlexibleCalendar.Calendar
+@using FlexibleCalendar.Calendars
 
 <Calendar MonthsToShow="6" CalendarColumns="3" />
 ```
@@ -104,7 +104,7 @@ Blazor-компонент для отображения календаря с в
 
 
 ```razor
-@using FlexibleCalendar.Calendar 
+@using FlexibleCalendar.Calendars
 
 <Calendar MonthsToShow="4"
           CalendarColumns="2"
